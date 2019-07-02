@@ -1,3 +1,3 @@
-#LeetCode
-##笔记
+# LeetCode
+## 笔记
 ---
