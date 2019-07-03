@@ -1,0 +1,75 @@
+题目：
+
+70.爬楼梯
+假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+
+每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+
+注意：给定 n 是一个正整数。
+
+示例 1：
+
+输入： 2
+输出： 2
+解释： 有两种方法可以爬到楼顶。
+1.  1 阶 + 1 阶
+2.  2 阶
+示例 2：
+
+输入： 3
+输出： 3
+解释： 有三种方法可以爬到楼顶。
+1.  1 阶 + 1 阶 + 1 阶
+2.  1 阶 + 2 阶
+3.  2 阶 + 1 阶
+
+解题思路：该题是菲波那切数列的变种，可以使用动态规划进行解决；仔细观察期运行步骤，可以发现其中包含
+大量重复的运算，通过将前面运算的结果保存下来，可以大大降低其时间复杂度。
+
+实现代码1（时间复杂度太高，超出时间限制）：
+void selectStair(int remainStep, int &count)
+{
+    if(remainStep == 0)
+    {
+        //当剩余步数为0，说明找到一种方法，计数加一
+        count++;
+        return;
+    }
+    if(remainStep >= 2)  //当剩余台阶他与等于2是，由选择余地
+    {
+        selectStair(remainStep - 1, count);
+        selectStair(remainStep - 2, count);
+    }else if(remainStep == 1)
+    {
+        selectStair(remainStep - 1, count);
+        //当剩余台阶等于1，没有选择余地
+    }
+}
+
+int climbStairs_recur(int n)
+{
+    int count = 0, remainStep = n;
+    selectStair(remainStep, count);
+    return count;
+}
+
+实现代码2（时间复杂度较低，可以通过）
+class Solution {
+public:
+    int climbStairs(int n) {
+        vector<int> nums;
+        if(n < 1)
+            return 0;
+        if(n == 1)
+            return 1;
+        if(n == 2)
+            return 2;
+        nums.push_back(1);
+        nums.push_back(2);
+        for(int i = 2; i < n; i++)
+        {
+            nums.push_back(nums[i - 1] + nums[i - 2]);
+        }
+        return nums[n - 1];
+    }
+};
